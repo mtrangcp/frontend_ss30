@@ -32,6 +32,73 @@ let products = [
 let carts = [];
 let choice, check = true;
 
+const showList = (arr) => {
+    let cateInput = prompt("Nhập tên danh mục muốn hiển thị sản phẩm: ").trim();
+    let result = arr.filter(item => item.category.toLowerCase().includes(cateInput.toLowerCase()));
+    result.length === 0 ? console.log(`Không tồn tại danh mục "${cateInput}"`) : console.table(result);
+}
+
+const addCart = (arrCart, arrProduct) => {
+    let idInput;
+    do {
+        idInput = +prompt("Nhập id sản phẩm: ").trim();
+        check = Number.isInteger(idInput) && idInput > 0 ? false : true;
+    } while (check);
+    let index = arrProduct.findIndex(item => item.id === idInput);
+    if (index === -1) {
+        console.log(`Không tồn tại sản phẩm có id: ${idInput}`);
+
+    } else {
+        if (arrProduct[index].quantity === 0) {
+            alert(`Sản phẩm hết hàng!`);
+        } else {
+            let qty;
+            do {
+                qty = +prompt(`Nhập số lượng muốn mua: `);
+                check = Number.isInteger(qty) && qty > 0 ? false : true;
+            } while (check);
+
+            if (arrProduct[index].quantity < qty) {
+                alert(`Sản phẩm "${arrProduct[index].name}" không đủ số lượng.`);
+            } else {
+                let newCart = {
+                    id: arrCart.length + 1,
+                    name: arrProduct[index].name,
+                    quantity: qty,
+                    price: arrProduct[index].price
+                }
+                arrCart.push(newCart);
+                arrProduct[index].quantity -= qty;
+                console.log(`Đã thêm vào giỏ hàng!`);
+                console.table(arrCart);
+            }
+        }
+    }
+}
+
+const sortArr = (arr) => {
+    let choiceSort;
+    do {
+        choiceSort = prompt("a. Tăng dần \nb. Giảm dần").toLowerCase();
+        check = choiceSort === 'a' || choiceSort === 'b' ? false : true;
+    } while (check);
+    choiceSort === 'a' ? arr.sort((a, b) => a.price - b.price) : arr.sort((a, b) => b.price - a.price);
+
+    console.table(arr);
+}
+
+const totalAmount = (arr) => {
+    if (carts.length === 0) {
+        alert("Giỏ hàng rỗng");
+        return false;
+    }
+    let total = 0;
+    for (const el of carts) {
+        total += el.quantity * el.price;
+    }
+    console.log("Tổng giỏ hàng: ", total);
+}
+
 do {
     do {
         choice = +prompt("1. Hiển thị sản phẩm theo tên danh mục. \n2. Chọn sản phẩm để mua theo id. \n3. Sắp xếp sản phẩm theo giá \n4. Tính tiền giỏ hàng. \n5. Thoát ");
@@ -40,70 +107,19 @@ do {
 
     switch (choice) {
         case 1: {
-            let cateInput = prompt("Nhập tên danh mục muốn hiển thị sản phẩm: ");
-            let result = products.filter(item => item.category.toLowerCase().includes(cateInput.toLowerCase()));
-            result.length === 0 ? console.log(`Không tồn tại danh mục ${cateInput}`) : console.table(result);
+            showList(products);
             break;
         }
         case 2: {
-            let idInput;
-            do {
-                idInput = +prompt("Nhập id sản phẩm: ").trim();
-                check = Number.isInteger(idInput) && idInput > 0 ? false : true;
-            } while (check);
-            let index = products.findIndex(item => item.id === idInput);
-            if (index === -1) {
-                console.log(`Không tồn tại sản phẩm có id: ${idInput}`);
-
-            } else {
-                if (products[index].quantity === 0) {
-                    alert(`Sản phẩm hết hàng!`);
-                } else {
-                    let qty;
-                    do {
-                        qty = +prompt(`Nhập số lượng muốn mua: `);
-                        check = Number.isInteger(qty) && qty > 0 ? false : true;
-                    } while (check);
-
-                    if (products[index].quantity < qty) {
-                        alert(`Sản phẩm "${products[index].name}" không đủ số lượng.`);
-                    } else {
-                        let newCart = {
-                            id: carts.length + 1,
-                            name: products[index].name,
-                            quantity: qty,
-                            price: products[index].price
-                        }
-                        carts.push(newCart);
-                        products[index].quantity -= qty;
-                        console.log(`Đã thêm vào giỏ hàng!`);
-                        console.table(carts);
-                    }
-                }
-            }
+            addCart(carts, products);
             break;
         }
         case 3: {
-            let choiceSort;
-            do {
-                choiceSort = prompt("a. Tăng dần \nb. Giảm dần").toLowerCase();
-                check = choiceSort === 'a' || choiceSort === 'b' ? false : true;
-            } while (check);
-            choiceSort === 'a' ? products.sort((a, b) => a.price - b.price) : products.sort((a, b) => b.price - a.price);
-
-            console.table(products);
+            sortArr(products);
             break;
         }
         case 4: {
-            if (carts.length === 0) {
-                alert("Giỏ hàng rỗng");
-                break;
-            }
-            let total = 0;
-            for (const el of carts) {
-                total += el.quantity * el.price;
-            }
-            console.log("Tổng giỏ hàng: ", total);
+            totalAmount(carts);
             break;
         }
         case 5: {
