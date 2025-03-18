@@ -61,13 +61,19 @@ const addCart = (arrCart, arrProduct) => {
             if (arrProduct[index].quantity < qty) {
                 alert(`Sản phẩm "${arrProduct[index].name}" không đủ số lượng.`);
             } else {
-                let newCart = {
-                    id: arrCart.length + 1,
-                    name: arrProduct[index].name,
-                    quantity: qty,
-                    price: arrProduct[index].price
+                let checkCartExist = arrCart.findIndex(item => item.name === arrProduct[index].name);
+                if (checkCartExist === -1) {
+                    let newCart = {
+                        id: arrCart.length + 1,
+                        name: arrProduct[index].name,
+                        quantity: qty,
+                        price: arrProduct[index].price
+                    }
+                    arrCart.push(newCart);
+                } else {
+                    arrCart[checkCartExist].quantity += qty;
                 }
-                arrCart.push(newCart);
+
                 arrProduct[index].quantity -= qty;
                 console.log(`Đã thêm vào giỏ hàng!`);
                 console.table(arrCart);
