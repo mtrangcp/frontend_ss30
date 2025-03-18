@@ -131,6 +131,10 @@ const totalAmount = (arr) => {
 }
 
 const payAllCart = (arrCart) => {
+    if (arrCart.length === 0) {
+        alert("Giỏ hàng rỗng");
+        return;
+    }
     let total = totalAmount(arrCart);
     let confirmPay = confirm(`Tổng giỏ hàng: ${total.toLocaleString()}. Có chắn chắn thanh toán không?`);
     if (confirmPay) {
@@ -154,8 +158,8 @@ const sortPhoneByPrice = (arr) => {
     console.table(arr);
 }
 
-const totalQtyPhoneByCompany = (arrCart, arrPhone) => {
-    if (arr.length === 0) {
+const totalQtyPhoneByCompany = (arrPhone) => {
+    if (arrPhone.length === 0) {
         alert("Danh sách điện thoại rỗng");
         return false;
     }
@@ -169,7 +173,7 @@ const totalQtyPhoneByCompany = (arrCart, arrPhone) => {
         }
     }
 
-    for (const elCart of arrCart) {
+    for (const elCart of qtyByCompany) {
         qty = 0;
         for (const elPhone of arrPhone) {
             if (elCart === elPhone.company) qty += elPhone.quantity;
@@ -186,7 +190,7 @@ const totalQtyPhoneByCompany = (arrCart, arrPhone) => {
 
 do {
     do {
-        choice = +prompt("1. Hiển thị danh điện thoại điện thoại theo hãng \n2. Thêm điện thoại mới vào cửa hàng \n3. Tìm kiếm điện thoại theo tên hoặc id \n4. Mua điện thoại \n5. Thanh toán tất cả điện thoại trong giỏ hàng \n6. Sắp xếp điện thoại theo giá \n7. Hiển thị tổng số tiền của các điện thoại trong kho \n8. Hiển thị tổng số lượng điện thoại theo từng hàng \n9. Thoát ");
+        choice = +prompt("1. Hiển thị danh điện thoại điện thoại theo hãng \n2. Thêm điện thoại mới vào cửa hàng \n3. Tìm kiếm điện thoại theo tên hoặc id \n4. Mua điện thoại \n5. Thanh toán tất cả điện thoại trong giỏ hàng \n6. Sắp xếp điện thoại theo giá \n7. Hiển thị tổng số tiền của các điện thoại trong kho \n8. Hiển thị tổng số lượng điện thoại theo từng hãng \n9. Thoát ");
         check = Number.isInteger(choice) && choice >= 1 && choice <= 9 ? false : true;
     } while (check);
 
@@ -209,20 +213,20 @@ do {
             break;
         }
         case 5: {
-            payAllCart(phones);
+            payAllCart(carts);
             break;
         }
         case 6: {
-            sortPhoneByPrice(carts);
+            sortPhoneByPrice(phones);
             break;
         }
         case 7: {
-            let total = totalAmount(books);
+            let total = totalAmount(phones);
             console.log(`Tổng tiền trong kho: ${total} `);
             break;
         }
         case 8: {
-            totalQtyPhoneByCompany(carts, phones);
+            totalQtyPhoneByCompany(phones);
             break;
         }
         case 9: {
