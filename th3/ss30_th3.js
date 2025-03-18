@@ -154,14 +154,33 @@ const sortPhoneByPrice = (arr) => {
     console.table(arr);
 }
 
-const totalQtyPhoneByCompany = (arr) => {
+const totalQtyPhoneByCompany = (arrCart, arrPhone) => {
     if (arr.length === 0) {
         alert("Danh sách điện thoại rỗng");
         return false;
     }
 
     let qtyByCompany = [];
-    let comp, qty = 0;
+    let counts = [], qty = 0;
+    for (const el of arrPhone) {
+        let index = qtyByCompany.findIndex(item => item === el.company);
+        if (index === -1) {
+            qtyByCompany.push(el.company);
+        }
+    }
+
+    for (const elCart of arrCart) {
+        qty = 0;
+        for (const elPhone of arrPhone) {
+            if (elCart === elPhone.company) qty += elPhone.quantity;
+        }
+        counts.push(qty);
+    }
+
+    for (let i = 0; i < counts.length; i++) {
+        console.log(`${qtyByCompany[i]}: ${counts[i]}`);
+
+    }
 
 }
 
@@ -203,7 +222,7 @@ do {
             break;
         }
         case 8: {
-            totalQtyPhoneByCompany(phones);
+            totalQtyPhoneByCompany(carts, phones);
             break;
         }
         case 9: {
