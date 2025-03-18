@@ -177,7 +177,7 @@ do {
             break;
         }
         case 2: {
-            addBook(phones);
+            addPhone(phones);
             console.table(phones);
             break;
         }
@@ -186,15 +186,15 @@ do {
             break;
         }
         case 4: {
-            buyBook(phones, carts);
+            buyPhone(phones, carts);
             break;
         }
         case 5: {
-            sortBookByPrice(phones);
+            payAllCart(phones);
             break;
         }
         case 6: {
-            totalAmount(carts);
+            sortPhoneByPrice(carts);
             break;
         }
         case 7: {
@@ -203,7 +203,7 @@ do {
             break;
         }
         case 8: {
-
+            totalQtyPhoneByCompany(phones);
             break;
         }
         case 9: {
