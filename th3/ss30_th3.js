@@ -222,7 +222,7 @@ do {
         }
         case 7: {
             let total = totalAmount(phones);
-            console.log(`Tổng tiền trong kho: ${total} `);
+            console.log(`Tổng tiền trong kho: ${total.toLocaleString()} `);
             break;
         }
         case 8: {
